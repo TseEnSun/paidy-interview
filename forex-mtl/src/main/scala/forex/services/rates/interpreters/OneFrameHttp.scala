@@ -9,8 +9,6 @@ import org.http4s.circe._
 import forex.domain.Rate
 import forex.services.rates.{Algebra, Protocol, errors}
 import org.http4s.Method.GET
-//import org.http4s.MediaType
-//import org.http4s.headers._
 
 
 class OneFrameHttp[F[_]: Sync](
