@@ -1,10 +1,11 @@
 package forex.http
 
 import cats.effect.Sync
-import forex.services.HealthCheckService
 import org.http4s.dsl.Http4sDsl
 import org.http4s.HttpRoutes
 import org.http4s.server.Router
+import forex.domain.HealthCheck._
+import forex.services.HealthCheckService
 
 class HealthRoute[F[_]: Sync](healthCheck: HealthCheckService[F]) extends Http4sDsl[F]{
 
