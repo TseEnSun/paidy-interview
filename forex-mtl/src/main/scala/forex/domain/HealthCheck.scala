@@ -1,9 +1,5 @@
 package forex.domain
 
-import io.circe.Encoder
-import io.circe.generic.semiauto._
-import io.circe.generic.extras.semiauto.deriveUnwrappedEncoder
-
 
 object HealthCheck {
 
@@ -16,8 +12,4 @@ object HealthCheck {
   case class RedisStatus(value: Status)
 
   case class AppStatus(redis: RedisStatus)
-
-  implicit val statusEncoder: Encoder[Status] = Encoder.forProduct1("status")(_.toString)
-  implicit val RedisStatusEncoder: Encoder[RedisStatus] = deriveUnwrappedEncoder[RedisStatus]
-  implicit val appStatusEncoder: Encoder[AppStatus] = deriveEncoder
 }

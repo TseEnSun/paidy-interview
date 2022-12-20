@@ -3,7 +3,7 @@ package forex
 import cats.implicits._
 import cats.effect.{Concurrent, Timer}
 import forex.config.ApplicationConfig
-import forex.http.HealthRoute
+import forex.http.health.HealthRoute
 import forex.resources.AppResources
 import forex.http.rates.RatesHttpRoutes
 import forex.services._
