@@ -1,7 +1,5 @@
 package forex.services.healthcheck
 
-import cats.Applicative
-
 import scala.concurrent.duration._
 import cats.effect._
 import cats.effect.implicits._
@@ -14,7 +12,7 @@ import forex.domain.HealthCheck._
 
 object Interpreter {
 
-  def make[F[_]: Applicative: Concurrent: Timer](
+  def make[F[_]: Concurrent: Timer](
       redis: RedisCommands[F, String, String]
   ): Algebra[F] =
     new Algebra[F] {

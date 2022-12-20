@@ -2,7 +2,6 @@ package forex.services.rates.interpreters
 
 import cats.implicits._
 import cats.effect._
-import cats.syntax.show
 import forex.config.OneFrameConfig
 import org.http4s._
 import org.http4s.client._
