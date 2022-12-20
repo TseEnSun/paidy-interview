@@ -2,6 +2,7 @@ package forex.services.rates.interpreters
 
 import cats.implicits._
 import cats.effect._
+import cats.syntax.show
 import forex.config.OneFrameConfig
 import org.http4s._
 import org.http4s.client._
@@ -25,7 +26,7 @@ class OneFrameHttp[F[_]: Sync](
       .flatMap { uri =>
         val uriWithPathAndQuery = uri
           .withPath("/rates")
-          .withQueryParam("pair", pair.from.show + pair.to.show)
+          .withQueryParam("pair", pair.show)
         val headers = Headers.of(
           Header("token", cfg.token)
         )
