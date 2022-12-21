@@ -5,10 +5,10 @@ import cats.data.OptionT
 import cats.implicits._
 import io.circe.syntax._
 import io.circe.parser.decode
+import org.typelevel.log4cats.Logger
+import dev.profunktor.redis4cats.RedisCommands
 import forex.config.RedisConfig
 import forex.domain.Rate
-import dev.profunktor.redis4cats.RedisCommands
-import org.typelevel.log4cats.Logger
 
 
 object Interpreter {

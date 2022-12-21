@@ -1,13 +1,13 @@
 package forex.resources
 
+import fs2.Stream
 import cats.Parallel
 import cats.syntax.all._
-import fs2.Stream
 import cats.effect.{ConcurrentEffect, ContextShift, Resource}
-import dev.profunktor.redis4cats.effect.Log
 import org.http4s.client.Client
 import org.http4s.client.blaze._
 import org.typelevel.log4cats.Logger
+import dev.profunktor.redis4cats.effect.Log
 import dev.profunktor.redis4cats.{Redis, RedisCommands}
 import forex.config.{ApplicationConfig, HttpClientConfig, RedisConfig}
 

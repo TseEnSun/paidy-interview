@@ -1,11 +1,11 @@
 package forex.services.cache
 
-import forex.domain.Currency.show
-import forex.domain.Rate.Pair
-import forex.domain._
 import io.circe._
 import io.circe.generic.semiauto._
 import io.circe.generic.extras.semiauto.{ deriveUnwrappedDecoder, deriveUnwrappedEncoder }
+import forex.domain.Currency.show
+import forex.domain.Rate.Pair
+import forex.domain._
 
 
 object Protocol {
