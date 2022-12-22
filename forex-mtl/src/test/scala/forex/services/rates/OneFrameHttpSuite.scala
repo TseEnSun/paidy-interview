@@ -15,6 +15,7 @@ import forex.domain.Currency.show
 import forex.domain.{Currency, Price, Timestamp}
 import forex.services.RatesServices
 import forex.services.rates.Protocol.{ExchangeRate, OneFrameResponse}
+import forex.services.rates.errors.Error.OneFrameLookupFailed
 import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto.{deriveConfiguredEncoder, deriveUnwrappedEncoder}
 import io.circe.{Encoder, Json}
@@ -56,6 +57,21 @@ object OneFrameHttpSuite extends SimpleIOSuite with Checkers {
             expect.same(response.rates.head.toRate, rate)
           case _ =>
             failure("Response Ok 200 failed")
+        }
+    }
+  }
+
+  test("Response NotFound 404") {
+    forall(oneFrameResponseGen) { response =>
+      val client = Client.fromHttpApp(routes(NotFound("Dummy Failed")))
+
+      RatesServices.http[IO](config, client)
+        .get(response.rates.head.toRate.pair)
+        .map {
+          case Left(err) =>
+            expect.same(OneFrameLookupFailed("Failed with code: 404 and body Dummy Failed"), err)
+          case _ =>
+            failure("Response NotFound 404 failed")
         }
     }
   }
