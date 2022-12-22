@@ -1,5 +1,11 @@
 package forex.http
 
+/*
+This code is original from Gabriel's project: gvolpe/pfps-shopping-cart
+Please refer to the following link.
+https://github.com/gvolpe/pfps-shopping-cart/blob/second-edition/modules/tests/src/main/scala/suite/HttpSuite.scala
+ */
+
 import scala.util.control.NoStackTrace
 
 import cats.effect.IO
@@ -16,7 +22,10 @@ trait HttpSuite extends SimpleIOSuite with Checkers {
 
   case object DummyError extends NoStackTrace
 
-  def expectHttpBodyAndStatus[A: Encoder](routes: HttpRoutes[IO], req: Request[IO])(
+  def expectHttpBodyAndStatus[A: Encoder](
+    routes: HttpRoutes[IO],
+    req: Request[IO]
+  )(
     expectedBody: A,
     expectedStatus: Status
   ): IO[Expectations] =

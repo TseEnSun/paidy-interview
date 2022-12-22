@@ -54,6 +54,7 @@ object Dependencies {
     lazy val catsScalaCheck      = "io.chrisdavenport"     %% "cats-scalacheck"            % Versions.catsScalaCheck
     lazy val weaverCats          = "com.disneystreaming"   %% "weaver-cats"                % Versions.weaver
     lazy val weaverScalaCheck    = "com.disneystreaming"   %% "weaver-scalacheck"          % Versions.weaver
+    lazy val log4catsNoOp        = "org.typelevel"         %% "log4cats-noop"              % Versions.log4cats
   }
 
 }
