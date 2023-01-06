@@ -1,10 +1,14 @@
 package forex.domain
 
 import cats.Show
+import enumeratum._
 
-sealed trait Currency
+sealed trait Currency extends EnumEntry
 
-object Currency {
+object Currency extends Enum[Currency] {
+
+  val values: IndexedSeq[Currency] = findValues
+
   case object AUD extends Currency
   case object CAD extends Currency
   case object CHF extends Currency

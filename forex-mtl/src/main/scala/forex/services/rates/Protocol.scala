@@ -1,5 +1,6 @@
 package forex.services.rates
 
+import cats.data.NonEmptyList
 import forex.domain._
 import io.circe._
 import io.circe.generic.extras.Configuration
@@ -26,7 +27,7 @@ object Protocol {
   }
 
   case class OneFrameResponse(
-    rates: List[ExchangeRate]
+    rates: NonEmptyList[ExchangeRate]
   )
 
   implicit val currencyDecoder: Decoder[Currency] = Decoder.decodeString.map(Currency.fromString)

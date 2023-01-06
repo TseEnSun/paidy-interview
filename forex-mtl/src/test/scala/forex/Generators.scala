@@ -1,6 +1,8 @@
 package forex
 
 
+import cats.data.NonEmptyList
+
 import java.time.OffsetDateTime
 import org.scalacheck.Gen
 import forex.domain._
@@ -51,5 +53,19 @@ object Generators {
     } yield ExchangeRate(from, to, bid, ask, price, timeStamp)
 
   val oneFrameResponseGen: Gen[OneFrameResponse] =
-    exchangeRateGen.map(exchangeRate => OneFrameResponse(exchangeRate :: Nil))
+    exchangeRateGen.map(exchangeRate => OneFrameResponse(NonEmptyList.fromListUnsafe(exchangeRate :: Nil)))
+
+  val randomMsgGen: Gen[String] = Gen.asciiPrintableStr
+
+  val oneFrameResponseWithRandomMsgGen: Gen[(OneFrameResponse, String)] =
+    for {
+      response <- oneFrameResponseGen
+      msg <- randomMsgGen
+    } yield (response, msg)
+
+  val oneFrameResponseManyGen: Gen[OneFrameResponse] =
+    Gen.nonEmptyListOf(exchangeRateGen).map {
+      exchangeRates => OneFrameResponse(NonEmptyList.fromListUnsafe(exchangeRates))
+    }
+
 }
