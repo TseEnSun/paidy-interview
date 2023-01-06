@@ -31,7 +31,7 @@ object Currency extends Enum[Currency] {
     case USD => "USD"
   }
 
-  def fromString(s: String): Currency = s.toUpperCase match {
+  def fromString(s: String): Currency = s.toUpperCase match { // TODO: Should be able to handle scala.MatchError
     case "AUD" => AUD
     case "CAD" => CAD
     case "CHF" => CHF

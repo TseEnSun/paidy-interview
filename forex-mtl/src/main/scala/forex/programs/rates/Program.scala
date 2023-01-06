@@ -33,10 +33,11 @@ class Program[F[_] : Monad : Logger](
               eitherPairRates <- ratesService.getMany(allPairs).map{ eitherRates =>
                 eitherRates.map(rates => rates.map(rate => (rate.pair, rate)).toList.toMap)
               }
-              _ <- EitherT.fromEither[F](eitherPairRates).map(pairRates => cacheService.setMany(pairRates)).value
-              _ <- Logger[F].info(s"Refreshed cache!")
-              result <- EitherT.fromEither[F](eitherPairRates.map(m => m(targetPair))).value
-            } yield result
+              _ <- eitherPairRates match {
+                case Left(err) => Logger[F].error(s"Get rate from external failed: $err")
+                case Right(pairRates) => cacheService.setMany(pairRates) *> Logger[F].info(s"Refreshed cache!")
+              }
+            } yield eitherPairRates.map(m => m(targetPair))
           case Some(rate) =>
             for {
               _ <- Logger[F].info(s"Cache hit for ${targetPair.show}")
