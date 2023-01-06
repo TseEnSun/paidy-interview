@@ -16,7 +16,7 @@ Please note the following drawback of the [One-Frame service](https://hub.docker
 
 > The One-Frame service supports a maximum of 1000 requests per day for any given authentication token.
 
-## Anaylsis
+## Analysis
 
 In short, we can add a configurable cache layer to achieve the requirements.
 

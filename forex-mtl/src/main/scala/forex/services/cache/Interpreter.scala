@@ -42,7 +42,7 @@ object Interpreter {
       override def setMany(pairRates: Map[Rate.Pair, Rate]): F[Boolean] = {
         for {
           _ <- Logger[F].debug(s"Set many pairs in total number ${pairRates.size}")
-          _ <- redis.mSet(pairRates.map{ case (pair, rate) => (pair.show, rate.asJson.noSpaces)})
+          _ <- redis.mSet(pairRates.map{ case (pair, rate) => (pair.show, rate.asJson.noSpaces) })
           booleans <- pairRates.keys.toList.traverse(pair => redis.expire(pair.show, config.expiredTime))
         } yield booleans.forall(identity)
       }
