@@ -20,7 +20,7 @@ class Program[F[_] : Monad : Logger](
       val allPairs: NonEmptyList[Pair] = NonEmptyList.fromListUnsafe(
         (for {
           aCurrency <- Currency.values
-          bCurrency <- Currency.values if bCurrency != aCurrency
+          bCurrency <- Currency.values if aCurrency != bCurrency
         } yield Pair(aCurrency, bCurrency)).toList
       )
       val targetPair = Pair(request.from, request.to)
@@ -45,7 +45,6 @@ class Program[F[_] : Monad : Logger](
             } yield result
         }
       } yield result.leftMap(toProgramError)
-
     }
 
 }

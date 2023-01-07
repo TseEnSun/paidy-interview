@@ -7,6 +7,7 @@ import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import io.circe.generic.extras.semiauto.deriveUnwrappedDecoder
 
+
 object Protocol {
 
   implicit val configuration: Configuration = Configuration.default.withSnakeCaseMemberNames
@@ -30,7 +31,7 @@ object Protocol {
     rates: NonEmptyList[ExchangeRate]
   )
 
-  implicit val currencyDecoder: Decoder[Currency] = Decoder.decodeString.map(Currency.fromString)
+  implicit val currencyDecoder: Decoder[Currency] = Decoder.decodeString.map(Currency.withName)
   implicit val timestampDecoder: Decoder[Timestamp] = deriveUnwrappedDecoder[Timestamp]
   implicit val priceDecoder: Decoder[Price] = deriveUnwrappedDecoder[Price]
   implicit val exchangeRateDecoder: Decoder[ExchangeRate] = deriveConfiguredDecoder[ExchangeRate]

@@ -16,17 +16,7 @@ object Generators {
   val redisStatusGen: Gen[RedisStatus] = statusGen.map(RedisStatus)
   val appStatusGen: Gen[AppStatus] = redisStatusGen.map(AppStatus)
 
-  val currencyGen: Gen[Currency] = Gen.oneOf( // Currency could be a Enum
-    Currency.AUD,
-    Currency.CAD,
-    Currency.CHF,
-    Currency.EUR,
-    Currency.GBP,
-    Currency.NZD,
-    Currency.JPY,
-    Currency.SGD,
-    Currency.USD
-  )
+  val currencyGen: Gen[Currency] = Gen.oneOf(Currency.values)
   val pairGen: Gen[Rate.Pair] =
     for {
       a <- currencyGen
