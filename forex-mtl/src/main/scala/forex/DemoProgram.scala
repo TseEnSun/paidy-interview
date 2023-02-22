@@ -4,7 +4,7 @@ import cats.data.NonEmptyList
 import cats.effect._
 import cats.effect.concurrent.Semaphore
 import forex.domain._
-//import forex.programs.rates.Program
+import forex.programs.rates.Program
 import forex.programs.rates.BlockingProgram
 import forex.programs.rates.Protocol.GetRatesRequest
 import forex.services.{CacheService, RatesService}
@@ -59,24 +59,42 @@ object DemoProgram extends IOApp {
     GetRatesRequest(Currency.AUD, Currency.CAD),
     GetRatesRequest(Currency.AUD, Currency.CAD)
   )
+
+  def rateProgram(ref: Ref[IO, Map[Rate.Pair, Rate]]) = 
+    Program[IO](
+      fakeRateService(
+        Rate(
+          Rate.Pair(Currency.AUD, Currency.CAD),
+          Price(BigDecimal.apply(1)),
+          Timestamp(OffsetDateTime.MIN))
+      ),
+      fakeCacheService(ref)
+    )
+
+  def blackingProgram(ref:  Ref[IO, Map[Rate.Pair, Rate]], s: Semaphore[IO]) = 
+    BlockingProgram[IO](
+      fakeRateService(
+        Rate(
+          Rate.Pair(Currency.AUD, Currency.CAD),
+          Price(BigDecimal.apply(1)),
+          Timestamp(OffsetDateTime.MIN))
+      ),
+      fakeCacheService(ref),
+      s
+    )
+
   val program =
     for {
       s <- Semaphore[IO](1)
       ref <- Ref.of[IO, Map[Rate.Pair, Rate]](Map.empty)
       _ <- requests.map{ req =>
-        BlockingProgram[IO](
-          fakeRateService(
-            Rate(
-              Rate.Pair(Currency.AUD, Currency.CAD),
-              Price(BigDecimal.apply(1)),
-              Timestamp(OffsetDateTime.MIN))
-          ),
-          fakeCacheService(ref),
-          s
-        ).get(req).flatMap{
-          case Right(v) => Logger[IO].info(s"Success with $v")
-          case Left(e) => Logger[IO].info(s"Failed with $e")
-        }
+        blackingProgram(ref, s)
+        // rateProgram(ref)
+          .get(req)
+          .flatMap{
+            case Right(v) => Logger[IO].info(s"Success with $v")
+            case Left(e) => Logger[IO].info(s"Failed with $e")
+          }
       }.parSequence
     } yield ExitCode.Success
 
